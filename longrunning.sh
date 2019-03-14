@@ -7,4 +7,4 @@
 
 count=0 
 count="$(ps -eo pid,comm,pcpu,etimes| awk '{if($3>=0.1 && $4>3000){printf "%s %6s \n",  $2,$4}}' | wc -l)"
-echo longrunning,tag=1 lrn=$count
+echo longrunning,tag=1 lrn=$count,rcb=1
