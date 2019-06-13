@@ -1,0 +1,23 @@
+var query string
+var crit lambda
+var window = 1m
+var channel string
+var vmname string
+var tenantname string
+var measurement string
+
+batch
+    |query(query)
+        .period(window)
+        .every(window)
+    |alert()
+	.id(vmname+'-'+tenantname)
+        .crit(crit)
+        .message('[{{.Level}}] Alert ['+ vmname +'] ['+tenantname+'] with metric '+measurement+' is {{ .Level }}  value: {{ index .Fields "mean"| printf "%0.2f"  }}')
+	.details('''
+		<h1>{{ .ID }}</h1>
+		<b>{{ .Message }}</b>
+		Value: {{ index .Fields "field" }}
+		''')
+        .slack()
+      		.channel(channel)
