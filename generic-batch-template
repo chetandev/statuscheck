@@ -2,9 +2,11 @@ var query string
 var crit lambda
 var window = 1m
 var channel string
+var webhook_url string
 var vmname string
 var tenantname string
 var measurement string
+var email string
 
 batch
     |query(query)
@@ -12,12 +14,10 @@ batch
         .every(window)
     |alert()
 	.id(vmname+'-'+tenantname)
+        .stateChangesOnly()
         .crit(crit)
-        .message('[{{.Level}}] Alert ['+ vmname +'] ['+tenantname+'] with metric '+measurement+' is {{ .Level }}  value: {{ index .Fields "mean"| printf "%0.2f"  }}')
-	.details('''
-		<h1>{{ .ID }}</h1>
-		<b>{{ .Message }}</b>
-		Value: {{ index .Fields "field" }}
-		''')
-        .slack()
-      		.channel(channel)
+        .message('{{.Level}}|'+ vmname +'|'+tenantname+'|'+measurement+'|{{ index .Fields "mean"| printf "%0.2f"  }}|'+channel+'|'+webhook_url+'|'+email)
+        .post()
+      		.endpoint('localhost')
+		.captureResponse()
+    		
