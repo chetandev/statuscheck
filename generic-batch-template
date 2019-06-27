@@ -8,17 +8,17 @@ var tenantname string
 var measurement string
 var email string
 var serverid string
-var link string
+var launchpadMonitoringUrl string
 
 batch
     |query(query)
         .period(window)
         .every(window)
     |alert()
-        .id(vmname+'-'+tenantname)
+	.id(vmname+'-'+tenantname)
         .stateChangesOnly()
         .crit(crit)
-        .message('{{.Level}}|'+ vmname +'|'+tenantname+'|'+measurement+'|{{ index .Fields "mean"| printf "%0.2f"  }}|'+channel+'|'+webhook_url+'|'+email+'|'+serverid+'|'+link)
+        .message('{{.Level}}|'+ vmname +'|'+tenantname+'|'+measurement+'|{{ index .Fields "mean"| printf "%0.2f"  }}|'+channel+'|'+webhook_url+'|'+email+'|'+serverid+'|'+launchpadMonitoringUrl)
         .post()
-                .endpoint('localhost')
-                .captureResponse()
+      		.endpoint('localhost')
+		    .captureResponse()
