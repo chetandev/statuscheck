@@ -21,4 +21,4 @@ batch
         .message('{{.Level}}|'+ vmname +'|'+tenantname+'|'+measurement+'|{{ index .Fields "mean"| printf "%0.2f"  }}|'+channel+'|'+webhook_url+'|'+email+'|'+serverid+'|'+launchpadMonitoringUrl)
         .post()
       		.endpoint('localhost')
-		    .captureResponse()
+		.captureResponse()
